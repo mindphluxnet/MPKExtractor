@@ -53,28 +53,36 @@ def unpack_archive(mpkinfo_name):
 
             extract_file(name, file_offset, file_length, mpk_name)
 
-valid_param = False
-valid_list_files = glob.glob('*.mpkinfo')
-resource_info = "Resources.mpkinfo"
+if(len(sys.argv) == 0):
+    print("Usage: MPKExtractor.py <.mpkinfo> <-x|-l>")
+    sys.exit(1)
 
-for x in valid_list_files:
-    if(sys.argv[1] == x):
-         valid_param = True
+basename = ""
+resource_files = []
+resource_info = ""
 
-# Get resource mpk files
-mpk_files = glob.glob('Resource*.mpk')
-resource_files = ['Resources.mpk']
+if(sys.argv[1].lower().endswith(".mpkinfo")):
+    # fix mismatching file names for Resource*.mpk
+    if(sys.argv[1].lower().startswith("resource")):
+        basename = "Resources" 
+    else:
+        basename = sys.argv[1].split(".")[0]
 
-# Sort the mpk file list by name with proper numeration
-for index, x in enumerate(mpk_files):
-    if(index > 0):
-        resource_files.append('Resources' + str(index) + '.mpk')
+    mpk_files = glob.glob(basename + "*.mpk")
 
-if(valid_param == True):
+    resource_files.append(basename + ".mpk")
+
+    for index, x in enumerate(mpk_files):
+        if(index > 0):
+            resource_files.append(basename + str(index) + '.mpk')    
+
+    resource_info = sys.argv[1]
 
     if(sys.argv[2] == "-l"):
         list_archive_contents(sys.argv[1])
     elif(sys.argv[2] == "-x"):
         unpack_archive(sys.argv[1])
 
-
+else:
+    print("Usage: MPKExtractor.py <.mpkinfo> <-x|-l>")
+    sys.exit(1)
