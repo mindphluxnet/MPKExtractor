@@ -11,4 +11,4 @@ Options:
 -x: Extract to current directory (subdirectories will be created)  
 -l: List archive contents
 
-Allowed .mpkinfo files are Engine.mpkinfo or Resources.mpkinfo
+
